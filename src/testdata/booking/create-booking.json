@@ -1,0 +1,11 @@
+{
+    "firstname": "Test",
+    "lastname": "User",
+    "totalprice": 241,
+    "depositpaid": true,
+    "bookingdates": {
+        "checkin": "2019-07-06",
+        "checkout": "2024-04-11"
+    },
+    "additionalneeds": "Playwright API"
+}

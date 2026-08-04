@@ -1,31 +1,43 @@
-import { test, expect } from "playwright/test";
+import { test, expect } from "@playwright/test";
 import createBookingPayload from "@testdata/booking/create-booking.json";
+import { bookingData } from "@testdata/booking/booking-data";
 
-test("Booking - Create Booking", async ({ request }) => {
+// Execute the same test with multiple datasets
+bookingData.forEach((data) => {
 
-    // Generate unique values for this test execution
-    const timestamp = Date.now();
+    test(`Booking - Create Booking | ${data.testCase}`, async ({ request }) => {
 
-    // Create a copy of the JSON template
-    const payload = structuredClone(createBookingPayload);
+        // Create a copy of the JSON payload template
+        const payload = structuredClone(createBookingPayload);
 
-    payload.firstname = `Test_${timestamp}`;
-    payload.lastname = `User_${timestamp}`;
-    payload.additionalneeds = `Playwright API ${timestamp}`;
+        // Update payload with values from the current test dataset
+        payload.firstname = data.firstname;
+        payload.lastname = data.lastname;
+        payload.totalprice = data.totalprice;
+        payload.depositpaid = data.depositpaid;
+        payload.additionalneeds = data.additionalneeds;
 
-    const response = await request.post(
-        "https://restful-booker.herokuapp.com/booking",
-        {
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "application/json"
-            },
-            data: payload
-        }
-    );
+        // Send POST request to create a booking
+        const response = await request.post(
+            "https://restful-booker.herokuapp.com/booking",
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json"
+                },
+                data: payload
+            }
+        );
 
-    expect(response.status()).toBe(200);
+        // Validate response status code
+        expect(response.status()).toBe(data.expectedStatus);
 
-    const body = await response.json();
-    console.log(body);
+        // Parse response body
+        const body = await response.json();
+
+        // Print current test execution details
+        console.log(`Test Case: ${data.testCase}`);
+        console.log(body);
+    });
+
 });
