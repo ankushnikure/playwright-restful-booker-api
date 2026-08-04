@@ -3,6 +3,8 @@ import { test, expect } from "@playwright/test";
 test("Booking - Get Booking", async ({ request }) => {
     const bookingId = 4;
 
+    const startTime = Date.now();
+
     // Send GET request to retrieve booking details
     const response = await request.get(
         `https://restful-booker.herokuapp.com/booking/${bookingId}`
@@ -36,4 +38,12 @@ test("Booking - Get Booking", async ({ request }) => {
     expect(headers["content-length"]).toBeDefined();
     expect(headers["server"]).toBeDefined();
     expect(headers["date"]).toBeDefined();
+
+    const responseTime = Date.now() - startTime;
+
+    // Print response time for debugging/reference
+    console.log(`Response Time: ${responseTime} ms`);
+
+    // Validate response time
+    expect(responseTime).toBeLessThan(2000);
 });
