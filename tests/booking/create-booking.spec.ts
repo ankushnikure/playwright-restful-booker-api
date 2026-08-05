@@ -1,6 +1,7 @@
 import { test, expect } from "@playwright/test";
 import createBookingPayload from "@testdata/booking/create-booking.json";
 import { bookingData } from "@testdata/booking/booking-data";
+import { generateTimestamp, generateUniqueValue, generateFirstName } from "@utils/test-data";
 
 // Execute the same test with multiple datasets
 bookingData.forEach((data) => {
@@ -10,12 +11,15 @@ bookingData.forEach((data) => {
         // Create a copy of the JSON payload template
         const payload = structuredClone(createBookingPayload);
 
+        // Generate a unique identifier for the current test execution
+        const timestamp = generateTimestamp();
+
         // Update payload with values from the current test dataset
-        payload.firstname = data.firstname;
-        payload.lastname = data.lastname;
+        payload.firstname = generateFirstName(timestamp);
+        payload.lastname = generateUniqueValue(data.firstname, timestamp);
         payload.totalprice = data.totalprice;
         payload.depositpaid = data.depositpaid;
-        payload.additionalneeds = data.additionalneeds;
+        payload.additionalneeds = generateUniqueValue(data.additionalneeds, timestamp);
 
         // Send POST request to create a booking
         const response = await request.post(

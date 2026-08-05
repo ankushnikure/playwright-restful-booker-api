@@ -1,0 +1,11 @@
+{
+  "firstname": "",
+  "lastname": "",
+  "totalprice": 0,
+  "depositpaid": false,
+  "bookingdates": {
+    "checkin": "2019-07-06",
+    "checkout": "2024-04-11"
+  },
+  "additionalneeds": ""
+}
