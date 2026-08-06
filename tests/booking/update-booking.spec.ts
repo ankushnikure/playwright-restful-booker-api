@@ -1,47 +1,57 @@
-import { test, expect } from "playwright/test";
+import { test, expect } from "@playwright/test";
+import createBookingPayload from "@testdata/booking/create-booking.json";
+import updateBookingPayload from "@testdata/booking/update-booking.json";
+import {
+    generateTimestamp,
+    generateUniqueValue,
+    generateFirstName
+} from "@utils/test-data";
+import { getAuthToken } from "@utils/auth";
+import { ApiClient } from "@api/client";
+import { BookingService } from "@api/services/booking.service";
+import { createTestBooking } from "@utils/booking-helper";
 
-let token: string;
+test("Booking - Update Booking", async ({ request }) => {
 
-test.beforeAll(async ({ request }) => {
-    const response = await request.post("https://restful-booker.herokuapp.com/auth",
-        {
-            headers: {
-                'Content-Type': "application/json"
-            },
-            data: {
-                username: "admin",
-                password: "password123"
-            },
+    // Initialize services
+    const apiClient = new ApiClient(request);
+    const bookingService = new BookingService(apiClient);
 
-        });
-    expect(response.status()).toBe(200);
-    const body = await response.json();
-    expect(body).toHaveProperty('token');
-    token = body.token;
-    console.log("Token: ", body.token);
-})
+    // Generate auth token
+    const token = await getAuthToken(request);
 
-test('Booking - UpdateBooking', async ({ request }) => {
-    const bookingId = 1;
-    const response = await request.put(`https://restful-booker.herokuapp.com/booking/${bookingId}`, {
-        headers: {
-            'Content-Type': "application/json",
-            'Accept': "application/json",
-            'Cookie': `token=${token}`
-        },
-        data: {
-            firstname: 'gauri',
-            lastname: 'palyekar',
-            totalprice: 241,
-            depositpaid: true,
-            bookingdates: {
-                checkin: '2019-07-06',
-                checkout: '2024-04-11'
-            },
-            additionalneeds: 'learning playwright API'
-        }
-    })
-    expect(response.status()).toBe(200);
-    const body = await response.json();
-    console.log(body);
-})
+    const bookingId = await createTestBooking(bookingService);
+
+    console.log("Created Booking ID:", bookingId);
+
+    // -----------------------------
+    // Update Booking
+    // -----------------------------
+
+    const updatePayload = structuredClone(updateBookingPayload);
+
+    const updateTimestamp = generateTimestamp();
+
+    updatePayload.firstname = generateUniqueValue("UpdatedJohn", updateTimestamp);
+    updatePayload.lastname = generateUniqueValue("UpdatedDoe", updateTimestamp);
+    updatePayload.additionalneeds = generateUniqueValue("Lunch", updateTimestamp);
+
+    const updateResponse = await bookingService.updateBooking(
+        bookingId,
+        updatePayload,
+        token
+    );
+
+    expect(updateResponse.status()).toBe(200);
+
+    const updateBody = await updateResponse.json();
+
+    console.log("Update Booking Response:", updateBody);
+
+    expect(updateBody.firstname).toBe(updatePayload.firstname);
+    expect(updateBody.lastname).toBe(updatePayload.lastname);
+    expect(updateBody.totalprice).toBe(updatePayload.totalprice);
+    expect(updateBody.depositpaid).toBe(updatePayload.depositpaid);
+    expect(updateBody.additionalneeds).toBe(updatePayload.additionalneeds);
+
+});

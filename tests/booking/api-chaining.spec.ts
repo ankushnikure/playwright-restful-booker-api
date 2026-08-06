@@ -7,27 +7,27 @@ import {
     generateUniqueValue
 } from "@utils/test-data";
 import { getAuthToken } from "@utils/auth";
+import { ApiClient } from "@api/client";
+import { BookingService } from "@api/services/booking.service";
 
 test('API Chaining - Create Booking', async ({ request }) => {
 
+    // Initialize Services
+    const apiClient = new ApiClient(request);
+    const bookingService = new BookingService(apiClient);
+
+    const token = await getAuthToken(request);
+    console.log("Auth Token:", token);
+
     const timestamp = generateTimestamp();
 
-    const payload = structuredClone(createBookingPayload);
+    const createPayload = structuredClone(createBookingPayload);
 
-    payload.firstname = generateUniqueValue("John", timestamp);
-    payload.lastname = generateUniqueValue("Doe", timestamp);
-    payload.additionalneeds = generateUniqueValue("Breakfast", timestamp);
+    createPayload.firstname = generateUniqueValue("John", timestamp);
+    createPayload.lastname = generateUniqueValue("Doe", timestamp);
+    createPayload.additionalneeds = generateUniqueValue("Breakfast", timestamp);
 
-    const createResponse = await request.post(
-        "https://restful-booker.herokuapp.com/booking",
-        {
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "application/json"
-            },
-            data: payload
-        }
-    );
+    const createResponse = await bookingService.createBooking(createPayload);
 
     expect(createResponse.status()).toBe(200);
 
@@ -36,7 +36,6 @@ test('API Chaining - Create Booking', async ({ request }) => {
 
     // Capture bookingId from POST response
     const bookingId = createBody.bookingid;
-
     console.log("Booking ID:", bookingId);
 
     // --------------------
@@ -44,23 +43,19 @@ test('API Chaining - Create Booking', async ({ request }) => {
     // --------------------
 
     // Retrieve the newly created booking using the bookingId returned by POST
-    const getResponse = await request.get(
-        `https://restful-booker.herokuapp.com/booking/${bookingId}`
-    );
+    const getResponse = await bookingService.getBooking(bookingId);
 
     expect(getResponse.status()).toBe(200);
 
     const getBody = await getResponse.json();
     console.log("Get Booking Response:", getBody);
 
-    expect(getBody.firstname).toBe(payload.firstname);
-    expect(getBody.lastname).toBe(payload.lastname);
-    expect(getBody.totalprice).toBe(payload.totalprice);
-    expect(getBody.depositpaid).toBe(payload.depositpaid);
-    expect(getBody.additionalneeds).toBe(payload.additionalneeds);
-
-    const token = await getAuthToken(request);
-    console.log("Auth Token:", token);
+    expect(getBody.firstname).toBe(createPayload.firstname);
+    expect(getBody.lastname).toBe(createPayload.lastname);
+    expect(getBody.totalprice).toBe(createPayload.totalprice);
+    expect(getBody.depositpaid).toBe(createPayload.depositpaid);
+    expect(getBody.additionalneeds).toBe(createPayload.additionalneeds);
+    
 
 
     // --------------------
@@ -76,17 +71,12 @@ test('API Chaining - Create Booking', async ({ request }) => {
     updatedPayload.lastname = generateUniqueValue("UpdatedDoe", updateTimestamp);
     updatedPayload.additionalneeds = generateUniqueValue("Lunch", updateTimestamp);
 
-    const updateResponse = await request.put(
-        `https://restful-booker.herokuapp.com/booking/${bookingId}`,
-        {
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "application/json",
-                "Cookie": `token=${token}`
-            },
-            data: updatedPayload
-        }
+    const updateResponse = await bookingService.updateBooking(
+        bookingId,
+        updatedPayload,
+        token
     );
+
     expect(updateResponse.status()).toBe(200);
     const updateBody = await updateResponse.json();
     console.log("Update Booking Response:", updateBody);
@@ -101,9 +91,7 @@ test('API Chaining - Create Booking', async ({ request }) => {
     // Verify Updated Booking (GET)
     // --------------------
 
-    const verifyUpdatedResponse = await request.get(
-        `https://restful-booker.herokuapp.com/booking/${bookingId}`
-    );
+    const verifyUpdatedResponse = await bookingService.getBooking(bookingId);
 
     expect(verifyUpdatedResponse.status()).toBe(200);
 
@@ -128,16 +116,10 @@ test('API Chaining - Create Booking', async ({ request }) => {
     patchPayload.firstname = generateUniqueValue("PatchedJohn", patchTimestamp);
     patchPayload.additionalneeds = generateUniqueValue("Dinner", patchTimestamp);
 
-    const patchResponse = await request.patch(
-        `https://restful-booker.herokuapp.com/booking/${bookingId}`,
-        {
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "application/json",
-                "Cookie": `token=${token}`
-            },
-            data: patchPayload
-        }
+    const patchResponse = await bookingService.partialUpdateBooking(
+        bookingId,
+        patchPayload,
+        token
     );
 
     expect(patchResponse.status()).toBe(200);
@@ -158,9 +140,7 @@ test('API Chaining - Create Booking', async ({ request }) => {
     // Verify Patched Booking (GET)
     // --------------------
 
-    const verifyPatchedResponse = await request.get(
-        `https://restful-booker.herokuapp.com/booking/${bookingId}`
-    );
+    const verifyPatchedResponse = await bookingService.getBooking(bookingId);
 
     expect(verifyPatchedResponse.status()).toBe(200);
     const verifyPatchedBody = await verifyPatchedResponse.json();
@@ -176,14 +156,10 @@ test('API Chaining - Create Booking', async ({ request }) => {
     // DELETE Request
     // --------------------
 
-    const deleteResponse = await request.delete(
-        `https://restful-booker.herokuapp.com/booking/${bookingId}`,
-        {
-            headers: {
-                "Cookie": `token=${token}`
-            }
-        }
-    );
+    const deleteResponse = await bookingService.deleteBooking(
+        bookingId,
+        token
+    )
 
     expect(deleteResponse.status()).toBe(201);
     console.log("Delete Booking Response: Booking deleted successfully");
@@ -192,9 +168,7 @@ test('API Chaining - Create Booking', async ({ request }) => {
     // Verify Booking Deletion (GET)
     // --------------------
 
-    const verifyDeleteResponse = await request.get(
-        `https://restful-booker.herokuapp.com/booking/${bookingId}`
-    );
+    const verifyDeleteResponse = await bookingService.getBooking(bookingId);
 
     expect(verifyDeleteResponse.status()).toBe(404);
     console.log("Verify Delete Response: Booking not found (404)");

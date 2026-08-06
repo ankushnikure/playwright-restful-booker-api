@@ -1,5 +1,6 @@
 import { test, expect } from "@playwright/test";
 import createBookingPayload from "@testdata/booking/create-booking.json";
+import partialUpdateBookingPayload from "@testdata/booking/partial-update-booking.json";
 import {
     generateTimestamp,
     generateUniqueValue,
@@ -10,7 +11,7 @@ import { ApiClient } from "@api/client";
 import { BookingService } from "@api/services/booking.service";
 import { createTestBooking } from "@utils/booking-helper";
 
-test("Booking - Delete Booking", async ({ request }) => {
+test("Booking - Partial Update Booking", async ({ request }) => {
 
     // Initialize services
     const apiClient = new ApiClient(request);
@@ -24,24 +25,27 @@ test("Booking - Delete Booking", async ({ request }) => {
     console.log("Created Booking ID:", bookingId);
 
     // -----------------------------
-    // Delete Booking
+    // Partial Update Booking
     // -----------------------------
 
-    const deleteResponse = await bookingService.deleteBooking(
+    const patchPayload = structuredClone(partialUpdateBookingPayload);
+
+    const patchTimestamp = generateTimestamp();
+
+    patchPayload.firstname = generateUniqueValue("PatchedJohn", patchTimestamp);
+
+    const patchResponse = await bookingService.partialUpdateBooking(
         bookingId,
+        patchPayload,
         token
     );
 
-    expect(deleteResponse.status()).toBe(201);
+    expect(patchResponse.status()).toBe(200);
 
-    console.log("Booking Deleted Successfully");
+    const patchBody = await patchResponse.json();
 
-    // -----------------------------
-    // Verify Deletion
-    // -----------------------------
+    console.log("Patch Booking Response:", patchBody);
 
-    const getResponse = await bookingService.getBooking(bookingId);
-
-    expect(getResponse.status()).toBe(404);
+    expect(patchBody.firstname).toBe(patchPayload.firstname);
 
 });

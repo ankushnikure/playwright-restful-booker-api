@@ -1,6 +1,9 @@
 import { test, expect } from "@playwright/test";
 import Ajv from "ajv";
 import bookingSchema from "../../schemas/booking.schema.json";
+import { ApiClient } from "@api/client";
+import { BookingService } from "@api/services/booking.service";
+import { createTestBooking } from "@utils/booking-helper";
 
 // Initialize AJV instance
 const ajv = new Ajv();
@@ -9,20 +12,23 @@ const ajv = new Ajv();
 const validateSchema = ajv.compile(bookingSchema);
 
 test("Booking - Get Booking", async ({ request }) => {
-    const bookingId = 4;
+
+    // Initialize API services
+    const apiClient = new ApiClient(request);
+    const bookingService = new BookingService(apiClient);
+
+    const bookingId = await createTestBooking(bookingService)
 
     const startTime = Date.now();
 
     // Send GET request to retrieve booking details
-    const response = await request.get(
-        `https://restful-booker.herokuapp.com/booking/${bookingId}`
-    );
+    const getResponse = await bookingService.getBooking(bookingId);
 
     // Validate response status code
-    expect(response.status()).toBe(200);
+    expect(getResponse.status()).toBe(200);
 
     // Parse response body
-    const body = await response.json();
+    const body = await getResponse.json();
 
     // Validate response body
     expect(body.firstname).toBeDefined();
@@ -42,7 +48,7 @@ test("Booking - Get Booking", async ({ request }) => {
     console.log("First Name:", body.firstname);
 
     // Retrieve all response headers
-    const headers = response.headers();
+    const headers = getResponse.headers();
 
     // Print response headers for debugging/reference
     console.log(headers);
