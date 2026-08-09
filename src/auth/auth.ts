@@ -1,9 +1,8 @@
 import { APIRequestContext, expect } from "@playwright/test";
 
-export async function getAuthToken(
-    request: APIRequestContext
-): Promise<string> {
+export async function getAuthToken(request: APIRequestContext): Promise<string> {
 
+    // Send authentication request
     const response = await request.post(
         "https://restful-booker.herokuapp.com/auth",
         {

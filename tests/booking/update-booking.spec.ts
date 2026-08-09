@@ -5,15 +5,14 @@ import {
     generateTimestamp,
     generateUniqueValue,
     generateFirstName
-} from "@utils/test-data";
-import { getAuthToken } from "@utils/auth";
+} from "@utils/test-data-generator";
 import { createTestBooking } from "@utils/booking-helper";
 import { expectStatus } from "@utils/api-assertions";
-import { Booking } from "@api/types/booking";
+import { Booking } from "@api/types/booking.types";
 
-test("Booking - Update Booking", async ({ apiClient, bookingService, authToken }) => {
+test("Booking - Update Booking", async ({ apiClient, bookingClient, authToken }) => {
 
-    const bookingId = await createTestBooking(bookingService);
+    const bookingId = await createTestBooking(bookingClient);
 
     console.log("Created Booking ID:", bookingId);
 
@@ -31,7 +30,7 @@ test("Booking - Update Booking", async ({ apiClient, bookingService, authToken }
     updatePayload.lastname = generateUniqueValue("UpdatedDoe", updateTimestamp);
     updatePayload.additionalneeds = generateUniqueValue("Lunch", updateTimestamp);
 
-    const updateResponse = await bookingService.updateBooking(
+    const updateResponse = await bookingClient.updateBooking(
         bookingId,
         updatePayload,
         authToken
@@ -40,6 +39,7 @@ test("Booking - Update Booking", async ({ apiClient, bookingService, authToken }
     // Validate response status code
     expectStatus(updateResponse, 200);
 
+    // Parse API response as Booking type
     const updateBody = await apiClient.parseJsonResponse<Booking>(updateResponse);
 
     console.log("Update Booking Response:", updateBody);

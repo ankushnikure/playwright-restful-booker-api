@@ -12,13 +12,13 @@
         "baseUrl": ".",
         "types": ["node", "@playwright/test"],
         "paths": {
-            "@pages/*": ["src/pages/*"],
-            "@modules/*": ["src/modules/*"],
-            "@utils/*": ["src/utils/*"],
-            "@fixtures/*": ["src/fixtures/*"],
             "@api/*": ["src/api/*"],
+            "@auth/*": ["src/auth/*"],
             "@config/*": ["src/config/*"],
-            "@testdata/*": ["src/testdata/*"]
+            "@fixtures/*": ["src/fixtures/*"],
+            "@schemas/*": ["src/schemas/*"],
+            "@testdata/*": ["src/testdata/*"],
+            "@utils/*": ["src/utils/*"]
         }
     },
     "include": ["**/*.ts"],

@@ -1,7 +1,7 @@
 import { APIRequestContext, APIResponse } from "@playwright/test";
-import { RequestOptions } from "@api/types/request-options";
+import { RequestOptions } from "@api/types/request-options.types";
 
-export class ApiClient {
+export class ApiClient { // ← ONLY generic HTTP methods
 
     // Initialize ApiClient with Playwright's API request context
     constructor(private request: APIRequestContext) { }

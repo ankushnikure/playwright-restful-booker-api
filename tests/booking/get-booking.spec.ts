@@ -1,8 +1,8 @@
 import { test, expect } from "@fixtures/api.fixture";
 import Ajv from "ajv";
-import bookingSchema from "../../schemas/booking.schema.json";
+import bookingSchema  from "@schemas/booking.schema.json";
 import { createTestBooking } from "@utils/booking-helper";
-import { Booking } from "@api/types/booking";
+import { Booking } from "@api/types/booking.types";
 import { expectJsonResponse, expectStatus } from "@utils/api-assertions";
 
 // Initialize AJV instance
@@ -11,14 +11,22 @@ const ajv = new Ajv();
 // Compile JSON schema
 const validateSchema = ajv.compile(bookingSchema);
 
-test("Booking - Get Booking", async ({ apiClient, bookingService }) => {
+test("Booking - Get Booking", async ({ apiClient, bookingClient }) => {
 
-    const bookingId = await createTestBooking(bookingService)
+    const bookingId = await createTestBooking(bookingClient)
 
     const startTime = Date.now();
 
-    // Send GET request through BookingService to retrieve booking details
-    const getResponse = await bookingService.getBooking(bookingId);
+    // Send GET request through bookingClient to retrieve booking details
+    const getResponse = await bookingClient.getBooking(bookingId);
+
+    const responseTime = Date.now() - startTime;
+
+    // Print response time for debugging/reference
+    console.log(`Response Time: ${responseTime} ms`);
+
+    // Validate response time
+    expect(responseTime).toBeLessThan(2000);
 
     // Validate response status code
     expectStatus(getResponse, 200);
@@ -61,11 +69,4 @@ test("Booking - Get Booking", async ({ apiClient, bookingService }) => {
     expect(headers["server"]).toBeDefined();
     expect(headers["date"]).toBeDefined();
 
-    const responseTime = Date.now() - startTime;
-
-    // Print response time for debugging/reference
-    console.log(`Response Time: ${responseTime} ms`);
-
-    // Validate response time
-    expect(responseTime).toBeLessThan(2000);
 });

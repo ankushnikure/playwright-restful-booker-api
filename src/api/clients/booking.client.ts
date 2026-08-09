@@ -1,14 +1,12 @@
 import { APIResponse } from "@playwright/test";
-
-import { ApiClient } from "@api/client";
+import { ApiClient } from "@api/clients/api.client";
 import { BASE_URL } from "@config/env";
-import { ENDPOINTS } from "@api/endpoints";
-import { Booking} from "@api/types/booking";
-import { RequestOptions } from "@api/types/request-options";
+import { ENDPOINTS } from "@api/endpoints/endpoints";
+import { Booking } from "@api/types/booking.types";
 
-export class BookingService {
+export class BookingClient {
 
-    constructor(private apiClient: ApiClient) {}
+    constructor(private apiClient: ApiClient) { }
 
     async createBooking(payload: Booking): Promise<APIResponse> {
         return this.apiClient.post(

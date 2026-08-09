@@ -4,8 +4,8 @@ import {
     generateTimestamp,
     generateUniqueValue,
     generateFirstName
-} from "@utils/test-data";
-import { BookingService } from "@api/services/booking.service";
+} from "@utils/test-data-generator";
+import { BookingService } from "@api/clients/booking.client";
 
 export async function createTestBooking(
     bookingService: BookingService

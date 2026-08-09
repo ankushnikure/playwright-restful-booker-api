@@ -5,14 +5,14 @@ import {
     generateTimestamp,
     generateUniqueValue,
     generateFirstName
-} from "@utils/test-data";
+} from "@utils/test-data-generator";
 import { createTestBooking } from "@utils/booking-helper";
-import { Booking } from "@api/types/booking";
+import { Booking } from "@api/types/booking.types";
 import { expectStatus } from "@utils/api-assertions";
 
-test("Booking - Partial Update Booking", async ({ apiClient, bookingService, authToken }) => {
+test("Booking - Partial Update Booking", async ({ apiClient, bookingClient, authToken }) => {
 
-    const bookingId = await createTestBooking(bookingService);
+    const bookingId = await createTestBooking(bookingClient);
 
     console.log("Created Booking ID:", bookingId);
 
@@ -30,8 +30,8 @@ test("Booking - Partial Update Booking", async ({ apiClient, bookingService, aut
     patchPayload.firstname = generateUniqueValue("PatchedJohn", patchTimestamp);
     patchPayload.additionalneeds = generateUniqueValue("Dinner", patchTimestamp);
 
-    // Send PATCH request through BookingService
-    const patchResponse = await bookingService.partialUpdateBooking(
+    // Send PATCH request through bookingClient
+    const patchResponse = await bookingClient.partialUpdateBooking(
         bookingId,
         patchPayload,
         authToken

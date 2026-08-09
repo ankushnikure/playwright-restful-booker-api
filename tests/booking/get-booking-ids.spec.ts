@@ -1,12 +1,10 @@
-import { test, expect } from "@fixtures/api.fixture";
-import { ApiClient } from "@api/client";
-import { BookingService } from "@api/services/booking.service";
+import { test } from "@fixtures/api.fixture";
 import { expectStatus } from "@utils/api-assertions";
-import { Booking } from "@api/types/booking";
+import { Booking } from "@api/types/booking.types";
 
-test('Booking - GetBookingIds', async ({ apiClient, bookingService }) => {
+test('Booking - GetBookingIds', async ({ apiClient, bookingClient }) => {
 
-    const getResponse = await bookingService.getBookingIds();
+    const getResponse = await bookingClient.getBookingIds();
 
     // Parse API response body so TypeScript understands the response structure
     const body = await apiClient.parseJsonResponse<Booking>(getResponse);

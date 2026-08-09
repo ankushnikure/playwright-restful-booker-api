@@ -5,16 +5,16 @@ import partialUpdateBookingPayload from "@testdata/booking/partial-update-bookin
 import {
     generateTimestamp,
     generateUniqueValue
-} from "@utils/test-data";
-import { getAuthToken } from "@utils/auth";
-import { ApiClient } from "@api/client";
-import { BookingService } from "@api/services/booking.service";
+} from "@utils/test-data-generator";
+import { getAuthToken } from "src/auth/auth";
+import { ApiClient } from "@api/clients/api.client";
+import { BookingClient } from "@api/clients/booking.client";
 
 test('API Chaining - Create Booking', async ({ request }) => {
 
     // Initialize Services
     const apiClient = new ApiClient(request);
-    const bookingService = new BookingService(apiClient);
+    const bookingClient = new BookingClient(apiClient);
 
     const token = await getAuthToken(request);
     console.log("Auth Token:", token);
@@ -27,7 +27,7 @@ test('API Chaining - Create Booking', async ({ request }) => {
     createPayload.lastname = generateUniqueValue("Doe", timestamp);
     createPayload.additionalneeds = generateUniqueValue("Breakfast", timestamp);
 
-    const createResponse = await bookingService.createBooking(createPayload);
+    const createResponse = await bookingClient.createBooking(createPayload);
 
     expect(createResponse.status()).toBe(200);
 
@@ -43,7 +43,7 @@ test('API Chaining - Create Booking', async ({ request }) => {
     // --------------------
 
     // Retrieve the newly created booking using the bookingId returned by POST
-    const getResponse = await bookingService.getBooking(bookingId);
+    const getResponse = await bookingClient.getBooking(bookingId);
 
     expect(getResponse.status()).toBe(200);
 
@@ -71,7 +71,7 @@ test('API Chaining - Create Booking', async ({ request }) => {
     updatedPayload.lastname = generateUniqueValue("UpdatedDoe", updateTimestamp);
     updatedPayload.additionalneeds = generateUniqueValue("Lunch", updateTimestamp);
 
-    const updateResponse = await bookingService.updateBooking(
+    const updateResponse = await bookingClient.updateBooking(
         bookingId,
         updatedPayload,
         token
@@ -91,7 +91,7 @@ test('API Chaining - Create Booking', async ({ request }) => {
     // Verify Updated Booking (GET)
     // --------------------
 
-    const verifyUpdatedResponse = await bookingService.getBooking(bookingId);
+    const verifyUpdatedResponse = await bookingClient.getBooking(bookingId);
 
     expect(verifyUpdatedResponse.status()).toBe(200);
 
@@ -116,7 +116,7 @@ test('API Chaining - Create Booking', async ({ request }) => {
     patchPayload.firstname = generateUniqueValue("PatchedJohn", patchTimestamp);
     patchPayload.additionalneeds = generateUniqueValue("Dinner", patchTimestamp);
 
-    const patchResponse = await bookingService.partialUpdateBooking(
+    const patchResponse = await bookingClient.partialUpdateBooking(
         bookingId,
         patchPayload,
         token
@@ -140,7 +140,7 @@ test('API Chaining - Create Booking', async ({ request }) => {
     // Verify Patched Booking (GET)
     // --------------------
 
-    const verifyPatchedResponse = await bookingService.getBooking(bookingId);
+    const verifyPatchedResponse = await bookingClient.getBooking(bookingId);
 
     expect(verifyPatchedResponse.status()).toBe(200);
     const verifyPatchedBody = await verifyPatchedResponse.json();
@@ -156,7 +156,7 @@ test('API Chaining - Create Booking', async ({ request }) => {
     // DELETE Request
     // --------------------
 
-    const deleteResponse = await bookingService.deleteBooking(
+    const deleteResponse = await bookingClient.deleteBooking(
         bookingId,
         token
     )
@@ -168,7 +168,7 @@ test('API Chaining - Create Booking', async ({ request }) => {
     // Verify Booking Deletion (GET)
     // --------------------
 
-    const verifyDeleteResponse = await bookingService.getBooking(bookingId);
+    const verifyDeleteResponse = await bookingClient.getBooking(bookingId);
 
     expect(verifyDeleteResponse.status()).toBe(404);
     console.log("Verify Delete Response: Booking not found (404)");

@@ -1,14 +1,14 @@
 import { test, expect } from "@fixtures/api.fixture";
 import createBookingPayload from "@testdata/booking/create-booking.json";
 import { bookingData } from "@testdata/booking/booking-data";
-import { generateTimestamp, generateUniqueValue, generateFirstName } from "@utils/test-data";
-import { Booking, CreateBookingResponse } from "@api/types/booking";
+import { generateTimestamp, generateUniqueValue, generateFirstName } from "@utils/test-data-generator";
+import { Booking, CreateBookingResponse } from "@api/types/booking.types";
 import { expectStatus } from "@utils/api-assertions";
 
 // Execute the same test with multiple datasets
 bookingData.forEach((data) => {
 
-    test(`Booking - Create Booking | ${data.testCase}`, async ({ apiClient, bookingService }) => {
+    test(`Booking - Create Booking | ${data.testCase}`, async ({ apiClient, bookingClient }) => {
 
         // Create a copy of the JSON payload and treat it as a Booking type
         // so TypeScript can validate the request payload structure
@@ -25,7 +25,7 @@ bookingData.forEach((data) => {
         createPayload.additionalneeds = generateUniqueValue(data.additionalneeds, timestamp);
 
         // Send POST request to create a booking
-        const response = await bookingService.createBooking(createPayload);
+        const response = await bookingClient.createBooking(createPayload);
 
         // Validate response status code
         expectStatus(response, data.expectedStatus);

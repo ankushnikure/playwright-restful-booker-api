@@ -4,13 +4,13 @@ import {
     generateTimestamp,
     generateUniqueValue,
     generateFirstName
-} from "@utils/test-data";
+} from "@utils/test-data-generator";
 import { createTestBooking } from "@utils/booking-helper";
 import { expectStatus } from "@utils/api-assertions";
 
-test("Booking - Delete Booking", async ({ bookingService, authToken }) => {
+test("Booking - Delete Booking", async ({ bookingClient, authToken }) => {
 
-    const bookingId = await createTestBooking(bookingService);
+    const bookingId = await createTestBooking(bookingClient);
 
     console.log("Created Booking ID:", bookingId);
 
@@ -18,7 +18,7 @@ test("Booking - Delete Booking", async ({ bookingService, authToken }) => {
     // Delete Booking
     // -----------------------------
 
-    const deleteResponse = await bookingService.deleteBooking(
+    const deleteResponse = await bookingClient.deleteBooking(
         bookingId,
         authToken
     );
@@ -33,7 +33,7 @@ test("Booking - Delete Booking", async ({ bookingService, authToken }) => {
     // Verify Deletion
     // -----------------------------
 
-    const getResponse = await bookingService.getBooking(bookingId);
+    const getResponse = await bookingClient.getBooking(bookingId);
 
     expect(getResponse.status()).toBe(404);
 
