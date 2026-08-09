@@ -3,7 +3,7 @@ import Ajv from "ajv";
 import bookingSchema from "../../schemas/booking.schema.json";
 import { createTestBooking } from "@utils/booking-helper";
 import { Booking } from "@api/types/booking";
-import { expectStatus } from "@utils/api-assertions";
+import { expectJsonResponse, expectStatus } from "@utils/api-assertions";
 
 // Initialize AJV instance
 const ajv = new Ajv();
@@ -54,7 +54,7 @@ test("Booking - Get Booking", async ({ apiClient, bookingService }) => {
     console.log("Server:", headers["server"]);
 
     // Content-Type may include charset (e.g. application/json; charset=utf-8)
-    expect(headers["content-type"]).toContain("application/json");
+    expectJsonResponse(getResponse);
 
     // These headers are dynamic or infrastructure-dependent, so only verify they exist
     expect(headers["content-length"]).toBeDefined();

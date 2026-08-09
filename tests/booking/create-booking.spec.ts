@@ -33,6 +33,15 @@ bookingData.forEach((data) => {
         // Parse API response body so TypeScript understands the response structure
         const createBody = await apiClient.parseJsonResponse<CreateBookingResponse>(response);
 
+        // Validate booking ID is returned
+        expect(createBody.bookingid).toBeDefined();
+
+        // Validate created booking details
+        expect(createBody.booking.firstname).toBe(createPayload.firstname);
+        expect(createBody.booking.lastname).toBe(createPayload.lastname);
+        expect(createBody.booking.totalprice).toBe(createPayload.totalprice);
+        expect(createBody.booking.depositpaid).toBe(createPayload.depositpaid);
+        expect(createBody.booking.additionalneeds).toBe(createPayload.additionalneeds);
 
         // Print current test execution details
         console.log(`Test Case: ${data.testCase}`);

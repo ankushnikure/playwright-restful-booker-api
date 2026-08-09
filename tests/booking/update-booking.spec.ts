@@ -9,8 +9,9 @@ import {
 import { getAuthToken } from "@utils/auth";
 import { createTestBooking } from "@utils/booking-helper";
 import { expectStatus } from "@utils/api-assertions";
+import { Booking } from "@api/types/booking";
 
-test("Booking - Update Booking", async ({ bookingService, authToken }) => {
+test("Booking - Update Booking", async ({ apiClient, bookingService, authToken }) => {
 
     const bookingId = await createTestBooking(bookingService);
 
@@ -20,7 +21,9 @@ test("Booking - Update Booking", async ({ bookingService, authToken }) => {
     // Update Booking
     // -----------------------------
 
-    const updatePayload = structuredClone(updateBookingPayload);
+    // Create a copy of the UPDATE payload and apply the Booking type
+    // so TypeScript can check the request data structure
+    const updatePayload: Booking = structuredClone(updateBookingPayload);
 
     const updateTimestamp = generateTimestamp();
 
@@ -37,10 +40,11 @@ test("Booking - Update Booking", async ({ bookingService, authToken }) => {
     // Validate response status code
     expectStatus(updateResponse, 200);
 
-    const updateBody = await updateResponse.json();
+    const updateBody = await apiClient.parseJsonResponse<Booking>(updateResponse);
 
     console.log("Update Booking Response:", updateBody);
 
+    // Validate updated booking fields
     expect(updateBody.firstname).toBe(updatePayload.firstname);
     expect(updateBody.lastname).toBe(updatePayload.lastname);
     expect(updateBody.totalprice).toBe(updatePayload.totalprice);
