@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { test, expect } from "@fixtures/api.fixture";
 import createBookingPayload from "@testdata/booking/create-booking.json";
 import updateBookingPayload from "@testdata/booking/update-booking.json";
 import {
@@ -7,15 +7,9 @@ import {
     generateFirstName
 } from "@utils/test-data";
 import { getAuthToken } from "@utils/auth";
-import { ApiClient } from "@api/client";
-import { BookingService } from "@api/services/booking.service";
 import { createTestBooking } from "@utils/booking-helper";
 
-test("Booking - Update Booking", async ({ request }) => {
-
-    // Initialize services
-    const apiClient = new ApiClient(request);
-    const bookingService = new BookingService(apiClient);
+test("Booking - Update Booking", async ({ request, bookingService }) => {
 
     // Generate auth token
     const token = await getAuthToken(request);

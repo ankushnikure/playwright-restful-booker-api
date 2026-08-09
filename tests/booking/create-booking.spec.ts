@@ -1,19 +1,13 @@
-import { test, expect } from "@playwright/test";
+import { test, expect } from "@fixtures/api.fixture";
 import createBookingPayload from "@testdata/booking/create-booking.json";
 import { bookingData } from "@testdata/booking/booking-data";
 import { generateTimestamp, generateUniqueValue, generateFirstName } from "@utils/test-data";
-import { ApiClient } from "@api/client";
-import { BookingService } from "@api/services/booking.service";
 import { Booking, CreateBookingResponse } from "@api/types/booking";
 
 // Execute the same test with multiple datasets
 bookingData.forEach((data) => {
 
-    test(`Booking - Create Booking | ${data.testCase}`, async ({ request }) => {
-
-        // Initialize API services
-        const apiClient = new ApiClient(request);
-        const bookingService = new BookingService(apiClient);
+    test(`Booking - Create Booking | ${data.testCase}`, async ({ apiClient, bookingService }) => {
 
         // Create a copy of the JSON payload and treat it as a Booking type
         // so TypeScript can validate the request payload structure
@@ -36,7 +30,6 @@ bookingData.forEach((data) => {
         expect(response.status()).toBe(data.expectedStatus);
 
         // Parse API response body so TypeScript understands the response structure
-        // const body = await response.json();
         const createBody = await apiClient.parseJsonResponse<CreateBookingResponse>(response);
 
 

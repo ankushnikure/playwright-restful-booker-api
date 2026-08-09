@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { test, expect } from "@fixtures/api.fixture";
 import createBookingPayload from "@testdata/booking/create-booking.json";
 import {
     generateTimestamp,
@@ -6,15 +6,9 @@ import {
     generateFirstName
 } from "@utils/test-data";
 import { getAuthToken } from "@utils/auth";
-import { ApiClient } from "@api/client";
-import { BookingService } from "@api/services/booking.service";
 import { createTestBooking } from "@utils/booking-helper";
 
-test("Booking - Delete Booking", async ({ request }) => {
-
-    // Initialize services
-    const apiClient = new ApiClient(request);
-    const bookingService = new BookingService(apiClient);
+test("Booking - Delete Booking", async ({ request, bookingService }) => {
 
     // Generate auth token
     const token = await getAuthToken(request);
@@ -33,6 +27,7 @@ test("Booking - Delete Booking", async ({ request }) => {
     );
 
     expect(deleteResponse.status()).toBe(201);
+    console.log("Status Code:", deleteResponse.status());
 
     console.log("Booking Deleted Successfully");
 

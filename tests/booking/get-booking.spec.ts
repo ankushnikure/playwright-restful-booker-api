@@ -1,8 +1,6 @@
-import { test, expect } from "@playwright/test";
+import { test, expect } from "@fixtures/api.fixture";
 import Ajv from "ajv";
 import bookingSchema from "../../schemas/booking.schema.json";
-import { ApiClient } from "@api/client";
-import { BookingService } from "@api/services/booking.service";
 import { createTestBooking } from "@utils/booking-helper";
 import { Booking } from "@api/types/booking";
 
@@ -12,24 +10,19 @@ const ajv = new Ajv();
 // Compile JSON schema
 const validateSchema = ajv.compile(bookingSchema);
 
-test("Booking - Get Booking", async ({ request }) => {
-
-    // Initialize API services
-    const apiClient = new ApiClient(request);
-    const bookingService = new BookingService(apiClient);
+test("Booking - Get Booking", async ({ apiClient, bookingService }) => {
 
     const bookingId = await createTestBooking(bookingService)
 
     const startTime = Date.now();
 
-    // Send GET request to retrieve booking details
+    // Send GET request through BookingService to retrieve booking details
     const getResponse = await bookingService.getBooking(bookingId);
 
     // Validate response status code
     expect(getResponse.status()).toBe(200);
 
     // Parse API response body so TypeScript understands the response structure
-    // const body = await getResponse.json();
     const getBody = await apiClient.parseJsonResponse<Booking>(getResponse);
 
     // Validate response body
