@@ -1,15 +1,11 @@
-import { test, expect } from "playwright/test";
+import { test, expect } from "@fixtures/api.fixture";
 import { ApiClient } from "@api/client";
 import { BookingService } from "@api/services/booking.service";
 
-test('Booking - GetBookingIds', async ({ request }) => {
+test('Booking - GetBookingIds', async ({ apiClient, bookingService }) => {
 
-    // Initialize API services
-    const apiClient = new ApiClient(request);
-    const bookingService = new BookingService(apiClient);
-
-    const response = await bookingService.getBookingIds();
-    const body = await response.json();
-    expect(response.status()).toBe(200);
+    const getResponse = await bookingService.getBookingIds();
+    const body = await apiClient.parseJsonResponse(getResponse);
+    expect(getResponse.status()).toBe(200);
     console.log(body);
 })

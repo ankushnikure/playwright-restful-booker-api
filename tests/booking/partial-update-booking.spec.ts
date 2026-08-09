@@ -6,10 +6,10 @@ import {
     generateUniqueValue,
     generateFirstName
 } from "@utils/test-data";
-import { getAuthToken } from "@utils/auth";
 import { createTestBooking } from "@utils/booking-helper";
+import { Booking } from "@api/types/booking";
 
-test("Booking - Partial Update Booking", async ({ bookingService, authToken }) => {
+test("Booking - Partial Update Booking", async ({ apiClient, bookingService, authToken }) => {
 
     const bookingId = await createTestBooking(bookingService);
 
@@ -19,24 +19,32 @@ test("Booking - Partial Update Booking", async ({ bookingService, authToken }) =
     // Partial Update Booking
     // -----------------------------
 
-    const patchPayload = structuredClone(partialUpdateBookingPayload);
+    // Create a copy of the PATCH payload and apply the Booking type
+    // so TypeScript can check the request data structure
+    const patchPayload: Partial<Booking> = structuredClone(partialUpdateBookingPayload);
+
 
     const patchTimestamp = generateTimestamp();
 
     patchPayload.firstname = generateUniqueValue("PatchedJohn", patchTimestamp);
+    patchPayload.additionalneeds = generateUniqueValue("Dinner", patchTimestamp);
 
+    // Send PATCH request through BookingService
     const patchResponse = await bookingService.partialUpdateBooking(
         bookingId,
         patchPayload,
         authToken
     );
 
+    // Validate response status code
     expect(patchResponse.status()).toBe(200);
 
-    const patchBody = await patchResponse.json();
+    // Parse API response as Booking type
+    const patchBody = await apiClient.parseJsonResponse<Booking>(patchResponse);
 
     console.log("Patch Booking Response:", patchBody);
 
+    // Validate updated field
     expect(patchBody.firstname).toBe(patchPayload.firstname);
 
 });
