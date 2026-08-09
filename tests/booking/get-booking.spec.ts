@@ -4,6 +4,7 @@ import bookingSchema from "../../schemas/booking.schema.json";
 import { ApiClient } from "@api/client";
 import { BookingService } from "@api/services/booking.service";
 import { createTestBooking } from "@utils/booking-helper";
+import { Booking } from "@api/types/booking";
 
 // Initialize AJV instance
 const ajv = new Ajv();
@@ -27,14 +28,15 @@ test("Booking - Get Booking", async ({ request }) => {
     // Validate response status code
     expect(getResponse.status()).toBe(200);
 
-    // Parse response body
-    const body = await getResponse.json();
+    // Parse API response body so TypeScript understands the response structure
+    // const body = await getResponse.json();
+    const getBody = await apiClient.parseJsonResponse<Booking>(getResponse);
 
     // Validate response body
-    expect(body.firstname).toBeDefined();
+    expect(getBody.firstname).toBeDefined();
 
     // Validate response JSON schema
-    const isSchemaValid = validateSchema(body);
+    const isSchemaValid = validateSchema(getBody);
 
     // Print schema validation errors (if any)
     if (!isSchemaValid) {
@@ -44,8 +46,8 @@ test("Booking - Get Booking", async ({ request }) => {
     expect(isSchemaValid).toBe(true);
 
     // Print response body for debugging/reference
-    console.log(body);
-    console.log("First Name:", body.firstname);
+    console.log(getBody);
+    console.log("First Name:", getBody.firstname);
 
     // Retrieve all response headers
     const headers = getResponse.headers();

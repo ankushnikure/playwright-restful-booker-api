@@ -3,17 +3,14 @@ import { APIResponse } from "@playwright/test";
 import { ApiClient } from "@api/client";
 import { BASE_URL } from "@config/env";
 import { ENDPOINTS } from "@api/endpoints";
-import { BookingPayload } from "@api/types/booking";
+import { Booking} from "@api/types/booking";
 import { RequestOptions } from "@api/types/request-options";
 
 export class BookingService {
 
     constructor(private apiClient: ApiClient) {}
 
-    async createBooking(
-        payload: BookingPayload
-    ): Promise<APIResponse> {
-
+    async createBooking(payload: Booking): Promise<APIResponse> {
         return this.apiClient.post(
             `${BASE_URL}${ENDPOINTS.BOOKING}`,
             {
@@ -26,10 +23,7 @@ export class BookingService {
         );
     }
 
-    async getBooking(
-        bookingId: number
-    ): Promise<APIResponse> {
-
+    async getBooking(bookingId: number): Promise<APIResponse> {
         return this.apiClient.get(
             `${BASE_URL}${ENDPOINTS.BOOKING}/${bookingId}`
         );
@@ -41,12 +35,7 @@ export class BookingService {
         );
     }
 
-    async updateBooking(
-        bookingId: number,
-        payload: BookingPayload,
-        token: string
-    ): Promise<APIResponse> {
-
+    async updateBooking(bookingId: number, payload: Booking, token: string): Promise<APIResponse> {
         return this.apiClient.put(
             `${BASE_URL}${ENDPOINTS.BOOKING}/${bookingId}`,
             {
@@ -60,12 +49,7 @@ export class BookingService {
         );
     }
 
-    async partialUpdateBooking(
-        bookingId: number,
-        payload: Partial<BookingPayload>,
-        token: string
-    ): Promise<APIResponse> {
-
+    async partialUpdateBooking(bookingId: number, payload: Partial<Booking>, token: string): Promise<APIResponse> {
         return this.apiClient.patch(
             `${BASE_URL}${ENDPOINTS.BOOKING}/${bookingId}`,
             {
@@ -79,11 +63,7 @@ export class BookingService {
         );
     }
 
-    async deleteBooking(
-        bookingId: number,
-        token: string
-    ): Promise<APIResponse> {
-
+    async deleteBooking(bookingId: number, token: string): Promise<APIResponse> {
         return this.apiClient.delete(
             `${BASE_URL}${ENDPOINTS.BOOKING}/${bookingId}`,
             {
