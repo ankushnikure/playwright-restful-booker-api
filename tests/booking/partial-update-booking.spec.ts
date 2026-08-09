@@ -9,10 +9,7 @@ import {
 import { getAuthToken } from "@utils/auth";
 import { createTestBooking } from "@utils/booking-helper";
 
-test("Booking - Partial Update Booking", async ({ request, bookingService }) => {
-
-    // Generate auth token
-    const token = await getAuthToken(request);
+test("Booking - Partial Update Booking", async ({ bookingService, authToken }) => {
 
     const bookingId = await createTestBooking(bookingService);
 
@@ -31,7 +28,7 @@ test("Booking - Partial Update Booking", async ({ request, bookingService }) => 
     const patchResponse = await bookingService.partialUpdateBooking(
         bookingId,
         patchPayload,
-        token
+        authToken
     );
 
     expect(patchResponse.status()).toBe(200);

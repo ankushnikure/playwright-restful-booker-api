@@ -5,13 +5,9 @@ import {
     generateUniqueValue,
     generateFirstName
 } from "@utils/test-data";
-import { getAuthToken } from "@utils/auth";
 import { createTestBooking } from "@utils/booking-helper";
 
-test("Booking - Delete Booking", async ({ request, bookingService }) => {
-
-    // Generate auth token
-    const token = await getAuthToken(request);
+test("Booking - Delete Booking", async ({ bookingService, authToken }) => {
 
     const bookingId = await createTestBooking(bookingService);
 
@@ -23,7 +19,7 @@ test("Booking - Delete Booking", async ({ request, bookingService }) => {
 
     const deleteResponse = await bookingService.deleteBooking(
         bookingId,
-        token
+        authToken
     );
 
     expect(deleteResponse.status()).toBe(201);

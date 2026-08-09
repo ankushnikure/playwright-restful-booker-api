@@ -9,10 +9,7 @@ import {
 import { getAuthToken } from "@utils/auth";
 import { createTestBooking } from "@utils/booking-helper";
 
-test("Booking - Update Booking", async ({ request, bookingService }) => {
-
-    // Generate auth token
-    const token = await getAuthToken(request);
+test("Booking - Update Booking", async ({ bookingService, authToken }) => {
 
     const bookingId = await createTestBooking(bookingService);
 
@@ -33,7 +30,7 @@ test("Booking - Update Booking", async ({ request, bookingService }) => {
     const updateResponse = await bookingService.updateBooking(
         bookingId,
         updatePayload,
-        token
+        authToken
     );
 
     expect(updateResponse.status()).toBe(200);
