@@ -8,6 +8,7 @@ import {
 } from "@utils/test-data";
 import { getAuthToken } from "@utils/auth";
 import { createTestBooking } from "@utils/booking-helper";
+import { expectStatus } from "@utils/api-assertions";
 
 test("Booking - Update Booking", async ({ bookingService, authToken }) => {
 
@@ -33,7 +34,8 @@ test("Booking - Update Booking", async ({ bookingService, authToken }) => {
         authToken
     );
 
-    expect(updateResponse.status()).toBe(200);
+    // Validate response status code
+    expectStatus(updateResponse, 200);
 
     const updateBody = await updateResponse.json();
 

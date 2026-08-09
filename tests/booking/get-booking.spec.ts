@@ -3,6 +3,7 @@ import Ajv from "ajv";
 import bookingSchema from "../../schemas/booking.schema.json";
 import { createTestBooking } from "@utils/booking-helper";
 import { Booking } from "@api/types/booking";
+import { expectStatus } from "@utils/api-assertions";
 
 // Initialize AJV instance
 const ajv = new Ajv();
@@ -20,7 +21,7 @@ test("Booking - Get Booking", async ({ apiClient, bookingService }) => {
     const getResponse = await bookingService.getBooking(bookingId);
 
     // Validate response status code
-    expect(getResponse.status()).toBe(200);
+    expectStatus(getResponse, 200);
 
     // Parse API response body so TypeScript understands the response structure
     const getBody = await apiClient.parseJsonResponse<Booking>(getResponse);

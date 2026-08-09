@@ -3,6 +3,7 @@ import createBookingPayload from "@testdata/booking/create-booking.json";
 import { bookingData } from "@testdata/booking/booking-data";
 import { generateTimestamp, generateUniqueValue, generateFirstName } from "@utils/test-data";
 import { Booking, CreateBookingResponse } from "@api/types/booking";
+import { expectStatus } from "@utils/api-assertions";
 
 // Execute the same test with multiple datasets
 bookingData.forEach((data) => {
@@ -27,7 +28,7 @@ bookingData.forEach((data) => {
         const response = await bookingService.createBooking(createPayload);
 
         // Validate response status code
-        expect(response.status()).toBe(data.expectedStatus);
+        expectStatus(response, data.expectedStatus);
 
         // Parse API response body so TypeScript understands the response structure
         const createBody = await apiClient.parseJsonResponse<CreateBookingResponse>(response);

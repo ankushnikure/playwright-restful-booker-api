@@ -8,6 +8,7 @@ import {
 } from "@utils/test-data";
 import { createTestBooking } from "@utils/booking-helper";
 import { Booking } from "@api/types/booking";
+import { expectStatus } from "@utils/api-assertions";
 
 test("Booking - Partial Update Booking", async ({ apiClient, bookingService, authToken }) => {
 
@@ -37,7 +38,7 @@ test("Booking - Partial Update Booking", async ({ apiClient, bookingService, aut
     );
 
     // Validate response status code
-    expect(patchResponse.status()).toBe(200);
+    expectStatus(patchResponse, 200);
 
     // Parse API response as Booking type
     const patchBody = await apiClient.parseJsonResponse<Booking>(patchResponse);
