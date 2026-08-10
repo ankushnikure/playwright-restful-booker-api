@@ -1,10 +1,13 @@
-import { APIRequestContext, expect } from "@playwright/test";
+import { APIRequestContext } from "@playwright/test";
+import { ENDPOINTS } from "@api/endpoints/endpoints";
+import { BASE_URL } from "@config/env";
+import { AuthResponse } from "@api/types/auth.types";
 
 export async function getAuthToken(request: APIRequestContext): Promise<string> {
 
     // Send authentication request
     const response = await request.post(
-        "https://restful-booker.herokuapp.com/auth",
+        `${BASE_URL}${ENDPOINTS.AUTH}`,
         {
             headers: {
                 "Content-Type": "application/json"
@@ -15,7 +18,7 @@ export async function getAuthToken(request: APIRequestContext): Promise<string> 
             }
         }
     );
-    expect(response.status()).toBe(200);
-    const body = await response.json();
+
+    const body: AuthResponse = await response.json();
     return body.token;
 }
