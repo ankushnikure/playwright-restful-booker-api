@@ -31,7 +31,7 @@ test("Booking - Get Booking", async ({ apiClient, bookingClient }) => {
     // Validate response status code
     expectStatus(getResponse, 200);
 
-    // Parse API response body so TypeScript understands the response structure
+    // Parse API response as Booking type
     const getBody = await apiClient.parseJsonResponse<Booking>(getResponse);
 
     // Validate response body

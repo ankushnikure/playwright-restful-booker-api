@@ -20,3 +20,8 @@ export interface CreateBookingResponse {
     bookingid: number;
     booking: Booking;
 }
+
+// BookingId represents a booking ID returned by the booking IDs API
+export interface BookingId {
+    bookingid: number;
+}

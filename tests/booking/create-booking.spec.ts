@@ -30,7 +30,7 @@ bookingData.forEach((data) => {
         // Validate response status code
         expectStatus(response, data.expectedStatus);
 
-        // Parse API response body so TypeScript understands the response structure
+        // Parse API response as CreateBookingResponse type
         const createBody = await apiClient.parseJsonResponse<CreateBookingResponse>(response);
 
         // Validate booking ID is returned

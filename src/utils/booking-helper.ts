@@ -5,9 +5,11 @@ import {
     generateUniqueValue,
     generateFirstName
 } from "@utils/test-data-generator";
+import { ApiClient } from "@api/clients/api.client";
 import { BookingClient } from "@api/clients/booking.client";
+import { CreateBookingResponse } from "@api/types/booking.types";
 
-export async function createTestBooking(bookingClient: BookingClient): Promise<number> {
+export async function createTestBooking(apiClient: ApiClient, bookingClient: BookingClient): Promise<number> {
 
     const payload = structuredClone(createBookingPayload);
 
@@ -17,11 +19,13 @@ export async function createTestBooking(bookingClient: BookingClient): Promise<n
     payload.lastname = generateUniqueValue("Doe", timestamp);
     payload.additionalneeds = generateUniqueValue("Breakfast", timestamp);
 
+    // Send POST request through bookingClient to retrieve booking details
     const response = await bookingClient.createBooking(payload);
 
     expect(response.status()).toBe(200);
 
-    const body = await response.json();
+   // Parse API response as CreateBookingResponse type
+    const body = await apiClient.parseJsonResponse<CreateBookingResponse>(response);
 
     return body.bookingid;
 }

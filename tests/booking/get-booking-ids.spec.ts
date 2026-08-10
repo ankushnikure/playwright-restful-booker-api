@@ -1,13 +1,13 @@
 import { test } from "@fixtures/api.fixture";
 import { expectStatus } from "@utils/api-assertions";
-import { Booking } from "@api/types/booking.types";
+import { BookingId } from "@api/types/booking.types";
 
 test('Booking - GetBookingIds', async ({ apiClient, bookingClient }) => {
 
     const getResponse = await bookingClient.getBookingIds();
 
-    // Parse API response body so TypeScript understands the response structure
-    const body = await apiClient.parseJsonResponse<Booking>(getResponse);
+    // Parse API response as Booking[] type
+    const body = await apiClient.parseJsonResponse<BookingId[]>(getResponse);
 
     // Validate response status code
     expectStatus(getResponse, 200);
