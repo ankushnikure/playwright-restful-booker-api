@@ -3,6 +3,7 @@ import { ApiClient } from "@api/clients/api.client";
 import { BASE_URL } from "@config/env";
 import { ENDPOINTS } from "@api/endpoints/endpoints";
 import { Booking } from "@api/types/booking.types";
+import { COMMON_HEADERS } from "src/constants/headers";
 
 export class BookingClient {
 
@@ -12,10 +13,7 @@ export class BookingClient {
         return this.apiClient.post(
             `${BASE_URL}${ENDPOINTS.BOOKING}`,
             {
-                headers: {
-                    "Content-Type": "application/json",
-                    "Accept": "application/json"
-                },
+                headers: COMMON_HEADERS,
                 data: payload
             }
         );
@@ -26,7 +24,7 @@ export class BookingClient {
             `${BASE_URL}${ENDPOINTS.BOOKING}/${bookingId}`
         );
     }
-
+q
     async getBookingIds(): Promise<APIResponse> {
         return this.apiClient.get(
             `${BASE_URL}${ENDPOINTS.BOOKING}`
@@ -38,8 +36,7 @@ export class BookingClient {
             `${BASE_URL}${ENDPOINTS.BOOKING}/${bookingId}`,
             {
                 headers: {
-                    "Content-Type": "application/json",
-                    "Accept": "application/json",
+                    ...COMMON_HEADERS,
                     "Cookie": `token=${token}`
                 },
                 data: payload
@@ -52,8 +49,7 @@ export class BookingClient {
             `${BASE_URL}${ENDPOINTS.BOOKING}/${bookingId}`,
             {
                 headers: {
-                    "Content-Type": "application/json",
-                    "Accept": "application/json",
+                    ...COMMON_HEADERS,
                     "Cookie": `token=${token}`
                 },
                 data: payload
