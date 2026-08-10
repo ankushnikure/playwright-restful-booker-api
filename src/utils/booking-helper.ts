@@ -1,15 +1,13 @@
 import { expect } from "@playwright/test";
-import createBookingPayload from "@testdata/booking/create-booking.json";
+import createBookingPayload from "@testdata/booking/payloads/create-booking.json";
 import {
     generateTimestamp,
     generateUniqueValue,
     generateFirstName
 } from "@utils/test-data-generator";
-import { BookingService } from "@api/clients/booking.client";
+import { BookingClient } from "@api/clients/booking.client";
 
-export async function createTestBooking(
-    bookingService: BookingService
-): Promise<number> {
+export async function createTestBooking(bookingClient: BookingClient): Promise<number> {
 
     const payload = structuredClone(createBookingPayload);
 
@@ -19,7 +17,7 @@ export async function createTestBooking(
     payload.lastname = generateUniqueValue("Doe", timestamp);
     payload.additionalneeds = generateUniqueValue("Breakfast", timestamp);
 
-    const response = await bookingService.createBooking(payload);
+    const response = await bookingClient.createBooking(payload);
 
     expect(response.status()).toBe(200);
 

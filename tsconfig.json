@@ -17,7 +17,7 @@
             "@config/*": ["src/config/*"],
             "@fixtures/*": ["src/fixtures/*"],
             "@schemas/*": ["src/schemas/*"],
-            "@testdata/*": ["src/testdata/*"],
+            "@testdata/*": ["src/test-data/*"],
             "@utils/*": ["src/utils/*"]
         }
     },

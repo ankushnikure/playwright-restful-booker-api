@@ -1,6 +1,6 @@
 import { test, expect } from "@fixtures/api.fixture";
-import createBookingPayload from "@testdata/booking/create-booking.json";
-import partialUpdateBookingPayload from "@testdata/booking/partial-update-booking.json";
+import createBookingPayload from "@testdata/booking/payloads/create-booking.json";
+import partialUpdateBookingPayload from "@testdata/booking/payloads/partial-update-booking.json";
 import {
     generateTimestamp,
     generateUniqueValue,

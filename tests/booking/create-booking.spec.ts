@@ -1,5 +1,5 @@
 import { test, expect } from "@fixtures/api.fixture";
-import createBookingPayload from "@testdata/booking/create-booking.json";
+import createBookingPayload from "@testdata/booking/payloads/create-booking.json";
 import { bookingData } from "@testdata/booking/booking-data";
 import { generateTimestamp, generateUniqueValue, generateFirstName } from "@utils/test-data-generator";
 import { Booking, CreateBookingResponse } from "@api/types/booking.types";
