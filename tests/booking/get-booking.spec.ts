@@ -3,7 +3,7 @@ import Ajv from "ajv";
 import bookingSchema  from "@schemas/booking.schema.json";
 import { createTestBooking } from "@utils/booking-helper";
 import { Booking } from "@api/types/booking.types";
-import { expectJsonResponse, expectStatus } from "@utils/api-assertions";
+import { expectJsonResponse, expectStatus, expectResponseTime } from "@utils/api-assertions";
 
 // Initialize AJV instance
 const ajv = new Ajv();
@@ -26,7 +26,7 @@ test("Booking - Get Booking", async ({ apiClient, bookingClient }) => {
     console.log(`Response Time: ${responseTime} ms`);
 
     // Validate response time
-    expect(responseTime).toBeLessThan(2000);
+    expectResponseTime(responseTime, 2000);
 
     // Validate response status code
     expectStatus(getResponse, 200);
