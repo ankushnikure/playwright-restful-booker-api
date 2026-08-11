@@ -8,26 +8,31 @@ export class ApiClient { // ← ONLY generic HTTP methods
 
     // Send a GET request
     async get(url: string, options?: ApiRequestOptions): Promise<APIResponse> {
+        console.log(`GET ${url}`);
         return this.request.get(url, options);
     }
 
     // Send a POST request
     async post(url: string, options?: ApiRequestOptions): Promise<APIResponse> {
+        console.log(`POST ${url}`);
         return this.request.post(url, options);
     }
 
     // Send a PUT request
     async put(url: string, options?: ApiRequestOptions): Promise<APIResponse> {
+        console.log(`PUT ${url}`);
         return this.request.put(url, options);
     }
 
-     // Send a PATCH request
+    // Send a PATCH request
     async patch(url: string, options?: ApiRequestOptions): Promise<APIResponse> {
+        console.log(`PATCH ${url}`);
         return this.request.patch(url, options);
     }
 
     // Send a DELETE request
     async delete(url: string, options?: ApiRequestOptions): Promise<APIResponse> {
+        console.log(`DELETE ${url}`);
         return this.request.delete(url, options);
     }
 
