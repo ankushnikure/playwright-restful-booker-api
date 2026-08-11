@@ -1,5 +1,5 @@
 import { APIRequestContext, APIResponse } from "@playwright/test";
-import { RequestOptions } from "@api/types/request-options.types";
+import { ApiRequestOptions } from "@api/types/api-request.types";
 
 export class ApiClient { // ← ONLY generic HTTP methods
 
@@ -7,27 +7,27 @@ export class ApiClient { // ← ONLY generic HTTP methods
     constructor(private request: APIRequestContext) { }
 
     // Send a GET request
-    async get(url: string, options?: RequestOptions): Promise<APIResponse> {
+    async get(url: string, options?: ApiRequestOptions): Promise<APIResponse> {
         return this.request.get(url, options);
     }
 
     // Send a POST request
-    async post(url: string, options?: RequestOptions): Promise<APIResponse> {
+    async post(url: string, options?: ApiRequestOptions): Promise<APIResponse> {
         return this.request.post(url, options);
     }
 
     // Send a PUT request
-    async put(url: string, options?: RequestOptions): Promise<APIResponse> {
+    async put(url: string, options?: ApiRequestOptions): Promise<APIResponse> {
         return this.request.put(url, options);
     }
 
      // Send a PATCH request
-    async patch(url: string, options?: RequestOptions): Promise<APIResponse> {
+    async patch(url: string, options?: ApiRequestOptions): Promise<APIResponse> {
         return this.request.patch(url, options);
     }
 
     // Send a DELETE request
-    async delete(url: string, options?: RequestOptions): Promise<APIResponse> {
+    async delete(url: string, options?: ApiRequestOptions): Promise<APIResponse> {
         return this.request.delete(url, options);
     }
 
