@@ -1,3 +1,7 @@
+import dotenv from "dotenv";
+
+// Load environment variables
+dotenv.config();
 
 // Use environment BASE_URL or default to RESTful Booker
 export const BASE_URL =
