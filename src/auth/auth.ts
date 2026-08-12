@@ -2,6 +2,10 @@ import { APIRequestContext } from "@playwright/test";
 import { BASE_URL } from "@config/env";
 import { ENDPOINTS } from "@api/endpoints/endpoints";
 import { AuthResponse } from "@api/types/auth.types";
+import {
+    AUTH_USERNAME,
+    AUTH_PASSWORD
+} from "@config/env";
 
 export async function getAuthToken(request: APIRequestContext): Promise<string> {
 
@@ -13,8 +17,8 @@ export async function getAuthToken(request: APIRequestContext): Promise<string> 
                 "Content-Type": "application/json"
             },
             data: {
-                username: "admin",
-                password: "password123"
+                username: AUTH_USERNAME,
+                password: AUTH_PASSWORD
             }
         }
     );
