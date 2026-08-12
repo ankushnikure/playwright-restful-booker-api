@@ -3,7 +3,8 @@ import { ApiClient } from "@api/clients/api.client";
 import { BASE_URL } from "@config/env";
 import { ENDPOINTS } from "@api/endpoints/endpoints";
 import { Booking } from "@api/types/booking.types";
-import { COMMON_HEADERS } from "src/constants/headers";
+import { COMMON_HEADERS } from "@constants/headers";
+import { ApiRequestOptions } from "@api/types/api-request.types";
 
 export class BookingClient {
 
@@ -24,10 +25,11 @@ export class BookingClient {
             `${BASE_URL}${ENDPOINTS.BOOKING}/${bookingId}`
         );
     }
-q
-    async getBookingIds(): Promise<APIResponse> {
+
+    async getBookingIds(options?: ApiRequestOptions): Promise<APIResponse> {
         return this.apiClient.get(
-            `${BASE_URL}${ENDPOINTS.BOOKING}`
+            `${BASE_URL}${ENDPOINTS.BOOKING}`,
+            options
         );
     }
 
