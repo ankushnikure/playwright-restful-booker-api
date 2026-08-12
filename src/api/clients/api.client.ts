@@ -39,6 +39,6 @@ export class ApiClient { // ← ONLY generic HTTP methods
     // Parse API response JSON and return it as the specified TypeScript type
     // <T> allows the caller to define the expected response type
     async parseJsonResponse<T>(response: APIResponse): Promise<T> {
-        return await response.json() as T;
+        return response.json() as T;
     }
 }
