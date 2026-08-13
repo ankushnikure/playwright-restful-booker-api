@@ -15,6 +15,7 @@
             "@api/*": ["src/api/*"],
             "@auth/*": ["src/auth/*"],
             "@config/*": ["src/config/*"],
+            "@constants/*": ["src/constants/*"],
             "@fixtures/*": ["src/fixtures/*"],
             "@schemas/*": ["src/schemas/*"],
             "@testdata/*": ["src/test-data/*"],
