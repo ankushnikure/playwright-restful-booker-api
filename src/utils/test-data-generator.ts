@@ -10,10 +10,7 @@ export function generateTimestamp(): number {
 /**
  * Appends a unique identifier to the provided value.
  */
-export function generateUniqueValue(
-    value: string,
-    uniqueId: number
-): string {
+export function generateUniqueValue(value: string, uniqueId: number): string {
     return `${value}_${uniqueId}`;
 }
 
@@ -23,7 +20,7 @@ export function generateUniqueValue(
 export function generateFirstName(uniqueId?: number): string {
     const firstName = faker.person.firstName();
 
-    return uniqueId
+    return uniqueId !== undefined
         ? `${firstName}_${uniqueId}`
         : firstName;
 }
