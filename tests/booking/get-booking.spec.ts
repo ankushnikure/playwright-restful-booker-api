@@ -3,7 +3,6 @@ import Ajv from "ajv";
 import bookingSchema  from "@schemas/booking.schema.json";
 import { createTestBooking } from "@utils/booking-helper";
 import { Booking } from "@api/types/booking.types";
-import { expectJsonResponse, expectStatus, expectResponseTime } from "@utils/api-assertions";
 
 // Initialize AJV instance
 const ajv = new Ajv();
@@ -26,10 +25,10 @@ test("Booking - Get Booking", async ({ apiClient, bookingClient }) => {
     console.log(`Response Time: ${responseTime} ms`);
 
     // Validate response time
-    expectResponseTime(responseTime, 2000);
+    expect(responseTime).toBeLessThan(2000);
 
     // Validate response status code
-    expectStatus(getResponse, 200);
+    expect(getResponse.status()).toBe(200);
 
     // Parse API response as Booking type
     const getBody = await apiClient.parseJsonResponse<Booking>(getResponse);
@@ -62,7 +61,7 @@ test("Booking - Get Booking", async ({ apiClient, bookingClient }) => {
     console.log("Server:", headers["server"]);
 
     // Content-Type may include charset (e.g. application/json; charset=utf-8)
-    expectJsonResponse(getResponse);
+    expect(getResponse.headers()["content-type"]).toContain("application/json");
 
     // These headers are dynamic or infrastructure-dependent, so only verify they exist
     expect(headers["content-length"]).toBeDefined();

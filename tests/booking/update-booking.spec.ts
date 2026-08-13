@@ -7,7 +7,6 @@ import {
     generateFirstName
 } from "@utils/test-data-generator";
 import { createTestBooking } from "@utils/booking-helper";
-import { expectStatus } from "@utils/api-assertions";
 import { Booking } from "@api/types/booking.types";
 
 test("Booking - Update Booking", async ({ apiClient, bookingClient, authToken }) => {
@@ -37,7 +36,7 @@ test("Booking - Update Booking", async ({ apiClient, bookingClient, authToken })
     );
 
     // Validate response status code
-    expectStatus(updateResponse, 200);
+    expect(updateResponse.status()).toBe(200);
 
     // Parse API response as Booking type
     const updateBody = await apiClient.parseJsonResponse<Booking>(updateResponse);

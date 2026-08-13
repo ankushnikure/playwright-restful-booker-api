@@ -6,7 +6,6 @@ import {
     generateFirstName
 } from "@utils/test-data-generator";
 import { createTestBooking } from "@utils/booking-helper";
-import { expectStatus } from "@utils/api-assertions";
 
 test("Booking - Delete Booking", async ({ bookingClient, authToken }) => {
 
@@ -24,7 +23,7 @@ test("Booking - Delete Booking", async ({ bookingClient, authToken }) => {
     );
 
     // Validate response status code
-    expectStatus(deleteResponse, 201)
+    expect(deleteResponse.status()).toBe(201);
     console.log("Status Code:", deleteResponse.status());
 
     console.log("Booking Deleted Successfully");
