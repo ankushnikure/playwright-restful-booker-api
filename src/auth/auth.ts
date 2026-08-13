@@ -20,15 +20,13 @@ export async function getAuthToken(request: APIRequestContext): Promise<string> 
                 username: AUTH_USERNAME,
                 password: AUTH_PASSWORD
             }
-        }
+        } 
     );
 
     const authBody: AuthResponse = await response.json();
 
     if (!response.ok() || !authBody.token) {
-        throw new Error(
-            `Authentication failed: ${response.status()}`
-        );
+        throw new Error(authBody.reason || "Authentication failed");
     }
 
     const body: AuthResponse = await response.json();
