@@ -1,10 +1,8 @@
 import { test, expect } from "@fixtures/api.fixture";
-import createBookingPayload from "@testdata/booking/payloads/create-booking.json";
 import partialUpdateBookingPayload from "@testdata/booking/payloads/partial-update-booking.json";
 import {
     generateTimestamp,
-    generateUniqueValue,
-    generateFirstName
+    generateUniqueValue
 } from "@utils/test-data-generator";
 import { createTestBooking } from "@utils/booking-helper";
 import { Booking } from "@api/types/booking.types";
