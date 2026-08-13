@@ -4,7 +4,7 @@ pipeline {
     environment {
         BASE_URL = 'https://restful-booker.herokuapp.com'
         AUTH_USERNAME = 'admin'
-        AUTH_PASSWORD = 'password123'
+        AUTH_PASSWORD = credentials('restful-booker-password')
     }
 
     stages {
