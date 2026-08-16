@@ -3,7 +3,7 @@ import { ApiClient } from "@api/clients/api.client";
 import { BookingClient } from "@api/clients/booking.client";
 import { getAuthToken } from "@auth/auth";
 
-// DEFINE: Define the objects that our custom test will provide
+// Define the objects that our custom test will provide
 type ApiFixtures = {
     apiClient: ApiClient;
     bookingClient: BookingClient
