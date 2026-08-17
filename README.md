@@ -146,4 +146,4 @@ This project demonstrates practical API automation using Playwright, including a
 ## Author
 
 **Ankush Nikure**  
-Software Quality Analyst | QA Automation
+Software Quality Analyst
