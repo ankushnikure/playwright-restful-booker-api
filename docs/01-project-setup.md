@@ -5,32 +5,37 @@ Quick reference for setting up the Playwright API automation project from scratc
 ## 1. Create Project
 
 ```bash
-mkdir playwright-restful-booker-api
-cd playwright-restful-booker-api
+mkdir playwright-api-automation
+cd playwright-api-automation
+```
+
+## 2. Initialize npm:
+
+```bash
 npm init -y
 ```
 
-## 2. Install Playwright
+## 3. Install Playwright
 
 ```bash
 npm install -D @playwright/test
 npx playwright install
 ```
 
-## 3. Install TypeScript
+## 4. Install TypeScript
 
 ```bash
 npm install -D typescript @types/node
 npx tsc --init
 ```
 
-## 4. Install Environment Configuration
+## 5. Install Environment Configuration
 
 ```bash
 npm install dotenv
 ```
 
-## 5. Optional Dependencies
+## 6. Optional Dependencies
 
 Install these only when required by the framework:
 
@@ -41,13 +46,13 @@ npm install -D @faker-js/faker allure-playwright
 - **Faker** – Generate dynamic test data
 - **Allure Playwright** – Allure test reporting
 
-## 6. Verify Playwright Installation
+## 7. Verify Playwright Installation
 
 ```bash
 npx playwright --version
 ```
 
-## 7. Run Tests
+## 8. Run Tests
 
 Run all tests:
 
@@ -67,13 +72,13 @@ Run tests in headed mode:
 npx playwright test --headed
 ```
 
-## 8. View Playwright Report
+## 9. View Playwright Report
 
 ```bash
 npx playwright show-report
 ```
 
-## 9. Environment Variables
+## 10. Environment Variables
 
 Create a local `.env` file for environment-specific values.
 
@@ -87,7 +92,7 @@ BOOKER_PASSWORD=<password>
 
 > Do not commit `.env` or any credentials/secrets to GitHub.
 
-## 10. Jenkins Configuration
+## 11. Jenkins Configuration
 
 For Jenkins execution, configure the required credentials/environment variables through Jenkins rather than storing them in the repository.
 
