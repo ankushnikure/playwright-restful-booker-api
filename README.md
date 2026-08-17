@@ -30,22 +30,47 @@ A **Playwright + TypeScript API automation framework** built using the [RESTful 
 ## Framework Structure
 
 ```text
-src/
-├── api/
-├── auth/
-├── fixtures/
-├── schemas/
-├── testdata/
-└── utils/
-
-tests/
-├── auth/
-└── booking/
-
-playwright.config.ts
-tsconfig.json
-package.json
-README.md
+playwright-restful-booker-api/
+│
+├── src/
+│   │
+│   ├── api/                         # API testing layer
+│   │   └── ...                      # API request methods / API clients
+│   │
+│   ├── auth/                        # Authentication layer
+│   │   └── auth.ts                  # Authentication & token generation
+│   │
+│   ├── fixtures/                    # Reusable Playwright fixtures
+│   │   └── api.fixture.ts           # API authentication fixture
+│   │
+│   ├── schemas/                     # JSON Schema validation
+│   │   └── ...                      # API response schemas
+│   │
+│   ├── testdata/                    # Test data & request payloads
+│   │   └── booking/
+│   │       ├── create-booking.json  # Booking request payload
+│   │       └── booking-data.ts      # Booking test scenarios/data
+│   │
+│   └── utils/                       # Reusable utility functions
+│       └── ...                      # Common helper methods
+│
+├── tests/                           # API test specifications
+│   │
+│   ├── auth/                        # Authentication tests
+│   │   └── ...
+│   │
+│   └── booking/                     # Booking API tests
+│       └── api-chaining.spec.ts     # Create → Get/Update/Delete flow
+│
+├── docs/                            # Supporting project documentation
+│   └── ...
+│
+├── playwright.config.ts             # Playwright test configuration
+├── tsconfig.json                    # TypeScript configuration
+├── package.json                     # NPM dependencies & scripts
+├── .env                             # Local environment variables
+├── .gitignore                       # Git ignore rules
+└── README.md                        # Project documentation
 ```
 
 ## API Chaining
