@@ -6,7 +6,7 @@ import {
     generateTimestamp,
     generateUniqueValue
 } from "@utils/test-data-generator";
-import { getAuthToken } from "src/auth/auth";
+import { getAuthToken } from "@auth/auth";
 import { ApiClient } from "@api/clients/api.client";
 import { BookingClient } from "@api/clients/booking.client";
 
